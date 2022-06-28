@@ -74,16 +74,13 @@ const config: Configuration = {
     filename: '[name].js',
     publicPath: '/dist/',
   },
-  // devServer: {
-  //   historyApiFallback: true,
-  //   port: 3090,
-  //   devMiddleware: { publicPath: '/dist/' },
-  //   static: { directory: path.resolve(__dirname) },
-  // },
+
   devServer: {
     devMiddleware: { publicPath: '/dist' },
     static: { directory: path.resolve(__dirname) },
     hot: true,
+    // port: 3090,
+    historyApiFallback: true,
   },
 };
 
