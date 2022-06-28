@@ -73,8 +73,8 @@ const config: Configuration = {
     new webpack.EnvironmentPlugin({ NODE_ENV: isDevelopment ? 'development' : 'production' }), 📄======================== 프론트 환경에서 process.env.NODE_ENV 환경변수를 사용할 수 있게 해준다.
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: '[name].js',
+    path: path.join(__dirname, 'dist'), 📄======================== __dirname : 현재폴더   현재폴더에 dist폴더를 생성해서 빌드
+    filename: '[name].js',    
     publicPath: '/dist/',
   },
   // devServer: {

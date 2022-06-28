@@ -27,7 +27,7 @@ const config: Configuration = {
     },
   },
   entry: {
-    app: './Client',
+    app: './index',
   },
   module: {
     rules: [
