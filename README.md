@@ -19,3 +19,17 @@
   //package.json
    "dev": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack serve --env development"
 ```
+
+3. react-router@6에서 redirect시키기
+
+- Navigate 사용
+
+```
+import {Routes, Route, Navigate} from 'react-router-dom'
+
+<Routes>
+  <Route path='/' element={<Navigate to='/login' replace />}>
+</Routes>
+```
+
+📄 Navigate태그 안에 **replace** 프로퍼티를 넣어주면 navigate에 적힌 주소로 넘어간 후 뒤로가기를 하더라도 방금의 페이지로 돌아오지 않습니다. 이 때는 자신의 메인 페이지 ("/")로 돌아오게 된다.
