@@ -82,12 +82,12 @@ const config: Configuration = {
     // port: 3090,
     historyApiFallback: true,
     //===============================================FRONT CORS ERROR HANDLING===================================================
-    // proxy: {
-    //   '/api/': {
-    //     target: 'http://localhost:3095',
-    //     changeOrigin: true,
-    //   },
-    // },
+    proxy: {
+      '/api/': {
+        target: 'http://localhost:3096',
+        changeOrigin: true,
+      },
+    },
   },
 };
 

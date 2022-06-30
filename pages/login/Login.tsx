@@ -1,43 +1,33 @@
-import useInput from '@hooks/useInput';
-import { Button, Error, Form, Header, Input, Label, LinkContainer } from '@pages/SignUp/styles';
-import fetcher from '@utils/fetcher';
-import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import useSWR from 'swr';
+import useInput from '@hooks/useInput';
+import { Header, Form, Label, Input, Button, LinkContainer, Error, Success } from '@pages/signup/styles';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const LogIn = () => {
-  const { data: userData, error, mutate } = useSWR('/api/users', fetcher);
   const [logInError, setLogInError] = useState(false);
-  const [email, onChangeEmail] = useInput('');
-  const [password, onChangePassword] = useInput('');
+  const [email, , onChangeEmail] = useInput('');
+  const [password, , onChangePassword] = useInput('');
+
   const onSubmit = useCallback(
-    (e) => {
+    (e: any) => {
       e.preventDefault();
-      setLogInError(false);
+
+      //====================POST LOGIN=========================
       axios
-        .post(
-          '/api/users/login',
-          { email, password },
-          {
-            withCredentials: true,
-          },
-        )
-        .then(() => {
-          mutate();
+        .post('/api/users/login', {
+          email,
+          password,
         })
-        .catch((error) => {
-          setLogInError(error.response?.data?.code === 401);
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
-    [email, password, mutate],
+    [email, password],
   );
-
-  console.log(error, userData);
-  if (!error && userData) {
-    console.log('로그인됨', userData);
-    return <Redirect to="/workspace/sleact/channel/일반" />;
-  }
 
   return (
     <div id="container">
@@ -60,7 +50,7 @@ const LogIn = () => {
       </Form>
       <LinkContainer>
         아직 회원이 아니신가요?&nbsp;
-        <a href="/signup">회원가입 하러가기</a>
+        <Link to="/signup">회원가입 하러가기</Link>
       </LinkContainer>
     </div>
   );
