@@ -41,4 +41,7 @@ import {Routes, Route, Navigate} from 'react-router-dom'
 
 ```
   npm i @loadable/component
+
+  const Login = loadable(() => import('@pages/login/Login'));
+  const Signup = loadable(() => import('@pages/signup/Signup'));
 ```
