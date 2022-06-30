@@ -2,11 +2,14 @@ import React, { useCallback, useState } from 'react';
 import { Header, Form, Label, Input, Button, LinkContainer, Error, Success } from '@pages/signup/styles';
 import useInput from '@hooks/useInput';
 import axios from 'axios';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import useSWR from 'swr';
+import fetcher from '@utils/fetcher';
 
 const Signup = () => {
-  //=======================state=============================
+  const { data, error, mutate } = useSWR('/api/users', fetcher);
+
   const [email, setEmail, onChangeEmail] = useInput('');
   const [nickname, setNickname, onChangeNickname] = useInput('');
   const [password, setPassword, ,] = useInput('');
@@ -56,7 +59,14 @@ const Signup = () => {
     [password],
   );
 
-  //======================return==============================
+  if (data === undefined) {
+    return <div>Loading</div>;
+  }
+
+  if (data) {
+    return <Navigate to="/workspace/channel" />;
+  }
+
   return (
     <div id="container">
       <Header>Slack</Header>

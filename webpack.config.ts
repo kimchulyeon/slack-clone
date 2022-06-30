@@ -79,13 +79,14 @@ const config: Configuration = {
     devMiddleware: { publicPath: '/dist' },
     static: { directory: path.resolve(__dirname) },
     hot: true,
-    // port: 3090,
+    port: 3090,
     historyApiFallback: true,
     //===============================================FRONT CORS ERROR HANDLING===================================================
     proxy: {
       '/api/': {
         target: 'http://localhost:3096',
         changeOrigin: true,
+        ws: true,
       },
     },
   },

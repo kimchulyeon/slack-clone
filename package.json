@@ -18,10 +18,12 @@
     "@types/react-dom": "^18.0.5",
     "@types/webpack-dev-server": "^4.7.2",
     "cross-env": "^7.0.3",
+    "gravatar": "^1.8.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
+    "swr": "^1.3.0",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4",
     "typescript-loadable-components-plugin": "^1.0.3"

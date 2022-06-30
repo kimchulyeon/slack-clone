@@ -1,13 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import useInput from '@hooks/useInput';
 import { Header, Form, Label, Input, Button, LinkContainer, Error, Success } from '@pages/signup/styles';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import useSWR from 'swr';
+import fetcher from '@utils/fetcher';
 
 const LogIn = () => {
   const [logInError, setLogInError] = useState(false);
   const [email, , onChangeEmail] = useInput('');
   const [password, , onChangePassword] = useInput('');
+
+  // ==========================SWR=============================
+  const { data, error, mutate } = useSWR('/api/users', fetcher);
 
   const onSubmit = useCallback(
     (e: any) => {
@@ -15,12 +20,19 @@ const LogIn = () => {
 
       //====================POST LOGIN=========================
       axios
-        .post('/api/users/login', {
-          email,
-          password,
-        })
+        .post(
+          '/api/users/login',
+          {
+            email,
+            password,
+          },
+          {
+            withCredentials: true,
+          },
+        )
         .then((res) => {
           console.log(res);
+          mutate(); //================mutate====================
         })
         .catch((err) => {
           console.log(err);
@@ -28,6 +40,11 @@ const LogIn = () => {
     },
     [email, password],
   );
+
+  // 로그인에 성공하면 워크스페이스 채널로 이동
+  if (data) {
+    return <Navigate to="/workspace/channel" />;
+  }
 
   return (
     <div id="container">
