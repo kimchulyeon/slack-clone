@@ -15,7 +15,7 @@ const LogIn = () => {
   const { data, error, mutate } = useSWR('/api/users', fetcher);
 
   const onSubmit = useCallback(
-    (e: any) => {
+    (e: React.FormEvent<HTMLElement>) => {
       e.preventDefault();
 
       //====================POST LOGIN=========================
@@ -43,7 +43,7 @@ const LogIn = () => {
 
   // 로그인에 성공하면 워크스페이스 채널로 이동
   if (data) {
-    return <Navigate to="/workspace/channel" />;
+    return <Navigate to="/workspace/1" />;
   }
 
   return (
