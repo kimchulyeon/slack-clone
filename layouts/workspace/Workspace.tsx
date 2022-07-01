@@ -15,6 +15,7 @@ import {
   ProfileModal,
   RightMenu,
   WorkspaceButton,
+  WorkspaceModal,
   WorkspaceName,
   Workspaces,
   WorkspaceWrapper,
@@ -27,14 +28,18 @@ import useInput from '@hooks/useInput';
 import Modal from '@components/modal/Modal';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CreateChannelModal from '@components/createChannelModal/CreateChannelModal';
 
 const Menu = loadable(() => import('@components/menu/Menu'));
 
 const Workspace = () => {
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
   const [newWorkspace, setNewWorkspace, onChangeNewWorkspace] = useInput('');
   const [newUrl, setNewUrl, onChangeNewUrl] = useInput('');
+
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
+  const [showCreateChannelModal, setShowCreateChannelModal] = useState(false);
+  const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
 
   const { data: userData, error, mutate } = useSWR<IUser | false>('/api/users', fetcher);
 
@@ -75,7 +80,7 @@ const Workspace = () => {
         )
         .then((res) => {
           mutate();
-          setShowWorkspaceModal(false);
+          setShowCreateWorkspaceModal(false);
           setNewWorkspace('');
           setNewUrl('');
         })
@@ -98,6 +103,16 @@ const Workspace = () => {
 
   const onCloseModal = useCallback(() => {
     setShowWorkspaceModal(false);
+    setShowCreateChannelModal(false);
+    setShowCreateWorkspaceModal(false);
+  }, []);
+
+  const toggleChannelMenu = useCallback(() => {
+    setShowCreateWorkspaceModal((prev) => !prev);
+  }, []);
+
+  const onClickAddChannel = useCallback(() => {
+    setShowCreateChannelModal(true);
   }, []);
 
   // :::::::::::라우트 이동 시 다른 화면 잠깐 보이는걸 로딩 처리:::::::::::
@@ -150,8 +165,16 @@ const Workspace = () => {
 
         {/* :::::::::::::채널 사이드바::::::::::::: */}
         <Channels>
-          <WorkspaceName>slack</WorkspaceName>
-          <MenuScroll>menu scroll</MenuScroll>
+          <WorkspaceName onClick={toggleChannelMenu}>Slack</WorkspaceName>
+          <MenuScroll>
+            <Menu show={showCreateWorkspaceModal} onCloseMenu={toggleChannelMenu} style={{ top: 95, left: 80 }}>
+              <WorkspaceModal>
+                <h2>Slack</h2>
+                <button onClick={onClickAddChannel}>채널 만들기</button>
+                <button onClick={onLogout}>로그아웃</button>
+              </WorkspaceModal>
+            </Menu>
+          </MenuScroll>
         </Channels>
         <Chats>
           {/* :::::::::::::::OUTLET:::::::::::::::: */}
@@ -175,6 +198,11 @@ const Workspace = () => {
           </form>
         </Modal>
       </div>
+
+      {/* =============================채널 생성 모달창============================= */}
+      <CreateChannelModal show={showCreateChannelModal} onCloseModal={onCloseModal} />
+
+      {/* 에러 팝업 */}
       <ToastContainer
         position="bottom-center"
         autoClose={5000}

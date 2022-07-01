@@ -14,6 +14,8 @@ const Menu: FC<Props> = ({ children, style, show, onCloseMenu }) => {
     e.stopPropagation();
   }, []);
 
+  if (!show) return null;
+
   return (
     // 모달 제외한 배경 부분
     <CreateMenu>
