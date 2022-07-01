@@ -56,7 +56,7 @@ const Workspace = () => {
     });
   }, []);
 
-  // 워크스페이스 모달 토글 함수
+  // 워크스페이스 생성 모달 토글 함수
   const onClickCreateWorkspace = useCallback(() => {
     setShowWorkspaceModal((prev) => !prev);
   }, []);
@@ -78,7 +78,7 @@ const Workspace = () => {
             withCredentials: true,
           },
         )
-        .then((res) => {
+        .then(() => {
           mutate();
           setShowCreateWorkspaceModal(false);
           setNewWorkspace('');
@@ -101,16 +101,19 @@ const Workspace = () => {
     [newWorkspace, newUrl],
   );
 
+  // 모든 모달 닫기 함수
   const onCloseModal = useCallback(() => {
     setShowWorkspaceModal(false);
     setShowCreateChannelModal(false);
     setShowCreateWorkspaceModal(false);
   }, []);
 
+  // 채널명 클릭 채널 메뉴 토클 함수
   const toggleChannelMenu = useCallback(() => {
     setShowCreateWorkspaceModal((prev) => !prev);
   }, []);
 
+  // 채널 생성 모달 열기 함수
   const onClickAddChannel = useCallback(() => {
     setShowCreateChannelModal(true);
   }, []);
@@ -167,6 +170,7 @@ const Workspace = () => {
         <Channels>
           <WorkspaceName onClick={toggleChannelMenu}>Slack</WorkspaceName>
           <MenuScroll>
+            {/* :::::::::::::채널 메뉴::::::::::::: */}
             <Menu show={showCreateWorkspaceModal} onCloseMenu={toggleChannelMenu} style={{ top: 95, left: 80 }}>
               <WorkspaceModal>
                 <h2>Slack</h2>
@@ -176,11 +180,16 @@ const Workspace = () => {
             </Menu>
           </MenuScroll>
         </Channels>
+        {/* =============================o채팅부분o============================= */}
         <Chats>
-          {/* :::::::::::::::OUTLET:::::::::::::::: */}
+          {/* :::::::::OUTLET::::::::: */}
           <Outlet />
         </Chats>
       </WorkspaceWrapper>
+
+      {/* ======================================================================================= */}
+      {/* =========================================모달창========================================= */}
+      {/* ======================================================================================= */}
 
       {/* =============================워크스페이스 생성 모달창============================= */}
       <div onClick={onCloseModal}>
@@ -200,9 +209,11 @@ const Workspace = () => {
       </div>
 
       {/* =============================채널 생성 모달창============================= */}
-      <CreateChannelModal show={showCreateChannelModal} onCloseModal={onCloseModal} />
+      <div onClick={onCloseModal}>
+        <CreateChannelModal show={showCreateChannelModal} onCloseModal={onCloseModal} />
+      </div>
 
-      {/* 에러 팝업 */}
+      {/* =============================에러 팝업============================= */}
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
