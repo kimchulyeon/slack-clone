@@ -64,7 +64,7 @@ const Signup = () => {
   }
 
   if (data) {
-    return <Navigate to="/workspace/channel" />;
+    return <Navigate to="/workspace/slack/channel/일반" />;
   }
 
   return (

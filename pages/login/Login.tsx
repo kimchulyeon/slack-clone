@@ -43,7 +43,7 @@ const LogIn = () => {
 
   // 로그인에 성공하면 워크스페이스 채널로 이동
   if (data) {
-    return <Navigate to="/workspace/1" />;
+    return <Navigate to="/workspace/slack/channel/일반" />;
   }
 
   return (
