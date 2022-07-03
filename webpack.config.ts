@@ -84,7 +84,7 @@ const config: Configuration = {
     //===============================================FRONT CORS ERROR HANDLING===================================================
     proxy: {
       '/api/': {
-        target: 'http://localhost:3096',
+        target: 'http://localhost:3095',
         changeOrigin: true,
         ws: true,
       },

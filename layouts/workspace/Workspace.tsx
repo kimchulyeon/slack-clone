@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import useSWR from 'swr';
 import axios from 'axios';
 import gravatar from 'gravatar';
-import { Navigate, Outlet } from 'react-router';
+import { Navigate, Outlet, useParams } from 'react-router';
 import {
   AddButton,
   Channels,
@@ -22,7 +22,7 @@ import {
 } from '@layouts/workspace/styles';
 import loadable from '@loadable/component';
 import { Link } from 'react-router-dom';
-import { IUser } from 'types/db';
+import { IChannel, IUser } from 'types/db';
 import { Button, Input, Label } from '@pages/signup/styles';
 import useInput from '@hooks/useInput';
 import Modal from '@components/modal/Modal';
@@ -41,7 +41,13 @@ const Workspace = () => {
   const [showCreateChannelModal, setShowCreateChannelModal] = useState(false);
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
 
-  const { data: userData, error, mutate } = useSWR<IUser | false>('/api/users', fetcher);
+  const { workspace } = useParams<{ workspace: string }>();
+
+  const { data: userData, error, mutate } = useSWR<IUser | false>('http://localhost:3095/api/users', fetcher);
+  const { data: channelData } = useSWR<IChannel[]>(
+    userData ? `http://localhost:3095/api/workspaces/${workspace}/channels` : null,
+    fetcher,
+  );
 
   const onLogout = useCallback(() => {
     axios.post('/api/users/logout').then(() => {
@@ -178,6 +184,9 @@ const Workspace = () => {
                 <button onClick={onLogout}>로그아웃</button>
               </WorkspaceModal>
             </Menu>
+            {channelData?.map((v) => (
+              <div>{v.name}</div>
+            ))}
           </MenuScroll>
         </Channels>
         {/* =============================o채팅부분o============================= */}
